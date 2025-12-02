@@ -51,6 +51,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y;
         }
         
         .container {
@@ -331,6 +332,7 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .option-card:active {
@@ -384,6 +386,7 @@
             background: var(--card-bg-light);
             border: 2px solid var(--border);
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .deposit-value:active {
@@ -436,6 +439,7 @@
             justify-content: center;
             min-height: 120px;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .game-option:active {
@@ -575,18 +579,21 @@
             position: relative;
             width: 100%;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0;
+            overflow: hidden;
         }
         
         .cards-container {
             display: flex;
             gap: 16px;
             overflow-x: auto;
-            padding: 10px 0 30px;
+            padding: 10px 16px 30px;
             scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            scroll-padding: 0 16px;
+            touch-action: pan-x;
         }
         
         .cards-container::-webkit-scrollbar {
@@ -594,7 +601,7 @@
         }
         
         .card {
-            min-width: calc(100% - 32px);
+            flex: 0 0 calc(100% - 32px);
             background: var(--card-bg);
             border-radius: var(--radius-lg);
             padding: 24px 20px;
@@ -604,9 +611,9 @@
             transition: all 0.3s ease;
             border: 1px solid var(--border);
             position: relative;
-            flex-shrink: 0;
             scroll-snap-align: start;
             overflow: hidden;
+            user-select: none;
         }
         
         .card::before {
@@ -697,6 +704,7 @@
             flex-shrink: 0;
         }
         
+        /* КНОПКА "ПОЛУЧИТЬ БОНУС" - ИЗМЕНЕНО */
         .card-button {
             margin-top: auto;
             padding: 14px 20px;
@@ -705,12 +713,14 @@
             border: none;
             border-radius: var(--radius-md);
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
             box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
             -webkit-tap-highlight-color: transparent;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         
         .card-button:active {
@@ -742,6 +752,7 @@
             z-index: 10;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             -webkit-tap-highlight-color: transparent;
+            display: none;
         }
         
         .carousel-btn:active {
@@ -757,11 +768,11 @@
         }
         
         .carousel-btn.prev {
-            left: 0;
+            left: 10px;
         }
         
         .carousel-btn.next {
-            right: 0;
+            right: 10px;
         }
         
         /* Плавная прокрутка */
@@ -773,6 +784,11 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
         }
         
         .card {
@@ -788,17 +804,37 @@
         }
         
         .carousel-indicator {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--text-muted);
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .carousel-indicator.active {
             background: var(--accent);
             transform: scale(1.2);
+        }
+        
+        /* Индикатор свайпа для мобильных */
+        .swipe-hint {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0.8;
+            animation: pulseHint 2s infinite;
+        }
+        
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
         }
         
         /* Адаптивность */
@@ -885,16 +921,20 @@
             }
             
             .card {
+                flex: 0 0 calc(100% - 32px);
                 padding: 20px 16px;
-                min-width: calc(100% - 16px);
             }
             
             .card-bonus {
                 font-size: 18px;
             }
             
-            .carousel-container {
-                padding: 0 20px;
+            .carousel-btn {
+                display: none;
+            }
+            
+            .swipe-hint {
+                display: flex;
             }
         }
         
@@ -990,15 +1030,21 @@
                 font-size: 15px;
             }
             
-            .carousel-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-                display: none;
+            .carousel-container {
+                padding: 0;
             }
             
-            .carousel-container {
-                padding: 0 10px;
+            .cards-container {
+                padding: 10px 16px 25px;
+            }
+            
+            .card {
+                flex: 0 0 calc(100% - 32px);
+            }
+            
+            .card-button {
+                font-size: 15px;
+                padding: 13px 18px;
             }
         }
         
@@ -1096,10 +1142,16 @@
             .card-button {
                 padding: 12px 16px;
                 font-size: 15px;
+                font-weight: 700;
             }
             
             .carousel-indicators {
                 margin-top: 16px;
+            }
+            
+            .swipe-hint {
+                font-size: 12px;
+                margin-top: 12px;
             }
         }
         
@@ -1131,6 +1183,29 @@
             .container {
                 padding: 0 12px;
             }
+            
+            .cards-container {
+                padding: 10px 12px 25px;
+            }
+            
+            .card {
+                flex: 0 0 calc(100% - 24px);
+                padding: 14px 12px;
+            }
+            
+            .card-button {
+                padding: 11px 14px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Стили для улучшенного свайпа */
+        .swipe-active {
+            transition: transform 0.3s ease-out;
+        }
+        
+        .card.swipe-moving {
+            transition: none;
         }
     </style>
 </head>
@@ -1276,7 +1351,7 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Без ограничений по играм</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Быстрый вывод средств</div>
                             </div>
-                            <button class="card-button">Получить предложение</button>
+                            <button class="card-button">Получить бонус</button>
                         </div>
                         
                         <!-- Карточка 2 -->
@@ -1292,7 +1367,7 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Макс. выигрыш 50 000 руб</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Минимальная верификация</div>
                             </div>
-                            <button class="card-button">Получить предложение</button>
+                            <button class="card-button">Получить бонус</button>
                         </div>
                         
                         <!-- Карточка 3 -->
@@ -1308,7 +1383,7 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Без условий отыгрыша</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Мгновенное начисление</div>
                             </div>
-                            <button class="card-button">Получить предложение</button>
+                            <button class="card-button">Получить бонус</button>
                         </div>
                     </div>
                     
@@ -1321,6 +1396,10 @@
                     <div class="carousel-indicator active" data-index="0"></div>
                     <div class="carousel-indicator" data-index="1"></div>
                     <div class="carousel-indicator" data-index="2"></div>
+                </div>
+                
+                <div class="swipe-hint" id="swipeHint">
+                    <i class="fas fa-arrows-left-right"></i> Проведите пальцем влево или вправо
                 </div>
             </div>
         </section>
@@ -1444,16 +1523,31 @@
                 
                 // Обновляем индикаторы карусели
                 updateCarouselIndicators();
+                
+                // Показываем подсказку о свайпе на мобильных
+                const swipeHint = document.getElementById('swipeHint');
+                if (window.innerWidth <= 768) {
+                    swipeHint.style.display = 'flex';
+                    setTimeout(() => {
+                        swipeHint.style.opacity = '0.6';
+                    }, 5000);
+                }
             }
         });
 
-        // Логика карусели результатов
+        // Логика карусели результатов с улучшенным свайпом
         const cardsContainer = document.getElementById('cardsContainer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const indicators = document.getElementById('carouselIndicators');
         let scrollPosition = 0;
         let currentIndex = 0;
+        let isSwiping = false;
+        let startX = 0;
+        let currentX = 0;
+        let velocity = 0;
+        let lastX = 0;
+        let lastTime = 0;
         
         // Расчет ширины карточки с учетом gap
         function getCardWidth() {
@@ -1472,17 +1566,30 @@
         }
 
         // Прокрутка к определенному индексу
-        function scrollToIndex(index) {
+        function scrollToIndex(index, smooth = true) {
             const cardWidth = getCardWidth();
+            const maxIndex = cardsContainer.children.length - 1;
+            
+            // Ограничиваем индекс
+            if (index < 0) index = 0;
+            if (index > maxIndex) index = maxIndex;
+            
             scrollPosition = index * cardWidth;
             currentIndex = index;
             
             cardsContainer.scrollTo({
                 left: scrollPosition,
-                behavior: 'smooth'
+                behavior: smooth ? 'smooth' : 'auto'
             });
             
             updateCarouselIndicators();
+        }
+
+        // Рассчитываем ближайший индекс на основе текущей позиции прокрутки
+        function getNearestIndex() {
+            const cardWidth = getCardWidth();
+            const scrollLeft = cardsContainer.scrollLeft;
+            return Math.round(scrollLeft / cardWidth);
         }
 
         // Обработчики кнопок карусели
@@ -1512,44 +1619,163 @@
             }
         });
 
-        // Обработка свайпов для мобильных
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        cardsContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        cardsContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
+        // УЛУЧШЕННАЯ ЛОГИКА СВАЙПА ДЛЯ МОБИЛЬНЫХ
+        cardsContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+        cardsContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+        cardsContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+        
+        // Также добавляем поддержку мыши для тестирования
+        cardsContainer.addEventListener('mousedown', handleMouseStart);
+        cardsContainer.addEventListener('mousemove', handleMouseMove);
+        cardsContainer.addEventListener('mouseup', handleMouseEnd);
+        cardsContainer.addEventListener('mouseleave', handleMouseEnd);
+        
+        function handleTouchStart(e) {
+            startX = e.touches[0].clientX;
+            currentX = startX;
+            lastX = startX;
+            lastTime = Date.now();
+            isSwiping = true;
             
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // Свайп влево - следующий слайд
-                    if (currentIndex >= cardsContainer.children.length - 1) {
-                        currentIndex = 0;
-                    } else {
-                        currentIndex++;
-                    }
-                } else {
-                    // Свайп вправо - предыдущий слайд
-                    if (currentIndex === 0) {
-                        currentIndex = cardsContainer.children.length - 1;
-                    } else {
-                        currentIndex--;
-                    }
-                }
-                scrollToIndex(currentIndex);
+            // Добавляем класс для отключения transition во время свайпа
+            cardsContainer.classList.add('swipe-active');
+            
+            // Отключаем стандартное поведение прокрутки
+            e.preventDefault();
+        }
+        
+        function handleTouchMove(e) {
+            if (!isSwiping) return;
+            
+            currentX = e.touches[0].clientX;
+            const deltaX = currentX - startX;
+            
+            // Прокручиваем контейнер вручную
+            cardsContainer.scrollLeft = scrollPosition - deltaX;
+            
+            // Рассчитываем скорость для инерции
+            const currentTime = Date.now();
+            const timeDiff = currentTime - lastTime;
+            if (timeDiff > 0) {
+                velocity = (currentX - lastX) / timeDiff;
+                lastX = currentX;
+                lastTime = currentTime;
             }
+            
+            e.preventDefault();
+        }
+        
+        function handleTouchEnd() {
+            if (!isSwiping) return;
+            
+            isSwiping = false;
+            const deltaX = currentX - startX;
+            const cardWidth = getCardWidth();
+            
+            // Определяем направление и силу свайпа
+            const isFastSwipe = Math.abs(velocity) > 0.5;
+            const isSignificantSwipe = Math.abs(deltaX) > cardWidth * 0.25;
+            
+            let targetIndex = currentIndex;
+            
+            if (isFastSwipe || isSignificantSwipe) {
+                // Определяем направление свайпа
+                if (deltaX > 0) {
+                    // Свайп вправо - предыдущий слайд
+                    targetIndex = currentIndex > 0 ? currentIndex - 1 : cardsContainer.children.length - 1;
+                } else {
+                    // Свайп влево - следующий слайд
+                    targetIndex = currentIndex < cardsContainer.children.length - 1 ? currentIndex + 1 : 0;
+                }
+            } else {
+                // Если свайп незначительный, переходим к ближайшему слайду
+                targetIndex = getNearestIndex();
+            }
+            
+            // Применяем инерцию, если свайп был быстрым
+            if (isFastSwipe && Math.abs(velocity) > 1) {
+                const inertiaDistance = velocity * 100;
+                cardsContainer.scrollLeft += inertiaDistance;
+                
+                // Через небольшой промежуток времени центрируем слайд
+                setTimeout(() => {
+                    scrollToIndex(targetIndex);
+                }, 100);
+            } else {
+                scrollToIndex(targetIndex);
+            }
+            
+            // Убираем класс свайпа
+            cardsContainer.classList.remove('swipe-active');
+            
+            // Скрываем подсказку о свайпе после первого использования
+            const swipeHint = document.getElementById('swipeHint');
+            swipeHint.style.opacity = '0.3';
+            setTimeout(() => {
+                swipeHint.style.display = 'none';
+            }, 1000);
+        }
+        
+        // Обработчики мыши для тестирования на десктопе
+        let isMouseDown = false;
+        let mouseStartX = 0;
+        
+        function handleMouseStart(e) {
+            isMouseDown = true;
+            mouseStartX = e.clientX;
+            startX = e.clientX;
+            currentX = startX;
+            lastX = startX;
+            lastTime = Date.now();
+            cardsContainer.classList.add('swipe-active');
+            e.preventDefault();
+        }
+        
+        function handleMouseMove(e) {
+            if (!isMouseDown) return;
+            
+            currentX = e.clientX;
+            const deltaX = currentX - startX;
+            cardsContainer.scrollLeft = scrollPosition - deltaX;
+            
+            const currentTime = Date.now();
+            const timeDiff = currentTime - lastTime;
+            if (timeDiff > 0) {
+                velocity = (currentX - lastX) / timeDiff;
+                lastX = currentX;
+                lastTime = currentTime;
+            }
+            
+            e.preventDefault();
+        }
+        
+        function handleMouseEnd() {
+            if (!isMouseDown) return;
+            
+            isMouseDown = false;
+            const deltaX = currentX - startX;
+            const cardWidth = getCardWidth();
+            
+            const isFastSwipe = Math.abs(velocity) > 0.5;
+            const isSignificantSwipe = Math.abs(deltaX) > cardWidth * 0.25;
+            
+            let targetIndex = currentIndex;
+            
+            if (isFastSwipe || isSignificantSwipe) {
+                if (deltaX > 0) {
+                    targetIndex = currentIndex > 0 ? currentIndex - 1 : cardsContainer.children.length - 1;
+                } else {
+                    targetIndex = currentIndex < cardsContainer.children.length - 1 ? currentIndex + 1 : 0;
+                }
+            } else {
+                targetIndex = getNearestIndex();
+            }
+            
+            scrollToIndex(targetIndex);
+            cardsContainer.classList.remove('swipe-active');
         }
 
-        // Обработка кнопок "Получить предложение"
+        // Обработка кнопок "Получить бонус"
         document.querySelectorAll('.card-button').forEach(button => {
             button.addEventListener('click', function() {
                 // Анимация нажатия
@@ -1559,21 +1785,45 @@
                 }, 150);
                 
                 // В реальном приложении здесь будет переход
-                alert('Перенаправляем на страницу с деталями предложения...');
+                const casinoName = this.closest('.card').querySelector('.casino-logo').textContent;
+                alert(`Перенаправляем в ${casinoName} для получения бонуса...`);
             });
         });
         
         // Обработка прокрутки для карусели
         cardsContainer.addEventListener('scroll', () => {
-            scrollPosition = cardsContainer.scrollLeft;
-            const cardWidth = getCardWidth();
-            currentIndex = Math.round(scrollPosition / cardWidth);
-            updateCarouselIndicators();
+            if (!isSwiping && !isMouseDown) {
+                scrollPosition = cardsContainer.scrollLeft;
+                currentIndex = getNearestIndex();
+                updateCarouselIndicators();
+            }
         });
         
         // Автоматическое определение текущего слайда при загрузке
         window.addEventListener('load', () => {
             updateCarouselIndicators();
+            
+            // Скрываем кнопки навигации на мобильных
+            if (window.innerWidth <= 768) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
+        });
+        
+        // Обработка изменения размера окна
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+            }
+            
+            // При изменении размера окна центрируем текущий слайд
+            setTimeout(() => {
+                scrollToIndex(currentIndex, false);
+            }, 100);
         });
         
         // Добавляем CSS для пульсации кнопки
