@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoldBonus - Эксклюзивные предложения</title>
+    <title>BonusFinder - Персональные предложения</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Базовые стили */
@@ -19,26 +19,31 @@
         
         :root {
             --white: #FFFFFF;
-            --dark-purple: #2D1B69;
-            --purple: #5D3FD3;
-            --light-purple: #8B5CF6;
-            --gold: #FFD700;
-            --gold-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            --gold-light: #FFF9C4;
-            --text-primary: #FFFFFF;
-            --text-secondary: #E2E8F0;
-            --text-gold: #FFD700;
-            --gradient: linear-gradient(135deg, #8B5CF6 0%, #5D3FD3 100%);
-            --gradient-dark: linear-gradient(135deg, #2D1B69 0%, #1F1147 100%);
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --black: #0A0A0F;
+            --dark-bg: #12121A;
+            --card-bg: #1C1C24;
+            --card-bg-light: #24242D;
+            --accent: #7C3AED;
+            --accent-secondary: #8B5CF6;
+            --accent-gradient: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%);
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --text-muted: #94A3B8;
             --success: #10B981;
             --warning: #F59E0B;
             --error: #EF4444;
+            --border: #2D2D3A;
+            --border-light: #3A3A48;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
         
         body {
-            background: var(--gradient-dark);
+            background: var(--dark-bg);
             color: var(--text-primary);
             line-height: 1.6;
             padding: 0;
@@ -50,67 +55,128 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 16px;
             position: relative;
             z-index: 2;
         }
         
-        /* Фоновые элементы */
-        .bg-elements {
+        /* Шапка сайта */
+        .header {
+            background: rgba(18, 18, 26, 0.95);
+            backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
+            z-index: 1000;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
         }
         
-        .bg-circle {
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo i {
+            font-size: 22px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--white);
+        }
+        
+        .nav-link::after {
+            content: '';
             position: absolute;
-            border-radius: 50%;
-            background: rgba(139, 92, 246, 0.1);
-            filter: blur(60px);
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
         }
         
-        .circle-1 {
-            width: 500px;
-            height: 500px;
-            top: -150px;
-            right: -150px;
-            background: rgba(255, 215, 0, 0.1);
+        .nav-link:hover::after {
+            width: 100%;
         }
         
-        .circle-2 {
-            width: 400px;
-            height: 400px;
-            bottom: -100px;
-            left: -100px;
-            background: rgba(139, 92, 246, 0.15);
+        /* Мобильное меню */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
         }
         
-        .circle-3 {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            left: 10%;
-            background: rgba(255, 215, 0, 0.08);
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 20px;
+            z-index: 999;
+            border-top: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
         /* Общие стили секций */
         .section {
-            padding: 80px 0;
+            padding: 100px 0;
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
         
         .section-subtitle {
-            font-size: 16px;
-            color: var(--gold);
+            font-size: 14px;
+            color: var(--accent-secondary);
             font-weight: 600;
             margin-bottom: 12px;
             text-transform: uppercase;
@@ -119,14 +185,14 @@
         
         .section-title {
             font-size: 42px;
-            font-weight: 700;
+            font-weight: 800;
             line-height: 1.1;
             margin-bottom: 20px;
             letter-spacing: -0.02em;
-            background: var(--gold-gradient);
+            background: linear-gradient(to right, #F8FAFC, #CBD5E1);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent;
         }
         
         .section-description {
@@ -139,9 +205,27 @@
         
         /* Герой-блок */
         .hero {
-            padding: 120px 0 80px;
+            padding: 160px 0 80px;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
         
         .hero-title {
@@ -156,29 +240,17 @@
         }
         
         .hero-title .highlight {
-            background: var(--gold-gradient);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
-        }
-        
-        .hero-title .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--gold-gradient);
-            border-radius: 2px;
+            color: transparent;
         }
         
         .hero-description {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-secondary);
             max-width: 800px;
-            margin: 0 auto 50px;
+            margin: 0 auto 48px;
             line-height: 1.6;
         }
         
@@ -187,9 +259,9 @@
             display: flex;
             justify-content: center;
             gap: 24px;
-            margin-bottom: 70px;
+            margin-bottom: 80px;
             flex-wrap: wrap;
-            max-width: 900px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -199,34 +271,41 @@
             flex-direction: column;
             align-items: center;
             padding: 24px 20px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            width: 200px;
-            height: 120px;
-            justify-content: center;
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+            box-shadow: var(--shadow-light);
+            min-width: 180px;
             transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .analytics-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
         }
         
         .analytics-badge:hover {
-            background: rgba(255, 215, 0, 0.1);
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
         }
         
         .analytics-number {
-            font-size: 32px;
-            font-weight: 700;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--white);
             margin-bottom: 8px;
         }
         
         .analytics-label {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-secondary);
             text-align: center;
             line-height: 1.3;
@@ -234,16 +313,15 @@
         
         /* Конструктор выгоды */
         .benefit-constructor {
-            background: rgba(45, 27, 105, 0.7);
-            border-radius: 24px;
-            padding: 60px 50px;
-            margin-bottom: 70px;
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 60px 48px;
+            margin-bottom: 60px;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
-            max-width: 1100px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -253,15 +331,15 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gold-gradient);
+            width: 100%;
+            height: 6px;
+            background: var(--accent-gradient);
         }
         
         .constructor-title {
             font-size: 36px;
             color: var(--text-primary);
-            margin-bottom: 50px;
+            margin-bottom: 48px;
             text-align: center;
             font-weight: 700;
             letter-spacing: -0.01em;
@@ -289,26 +367,28 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
         
         .step-number {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--card-bg-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
             font-weight: 700;
             color: var(--text-secondary);
+            border: 2px solid var(--border);
         }
         
         .step-number.active {
-            background: var(--gold-gradient);
-            color: var(--dark-purple);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            background: var(--accent-gradient);
+            color: var(--white);
+            border-color: transparent;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
         }
         
         .step-title {
@@ -318,47 +398,53 @@
             letter-spacing: -0.01em;
         }
         
+        /* Грид опций - ИЗМЕНЕНО: 4 карточки в один ряд */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
         }
         
         .option-card {
-            padding: 28px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 24px 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--card-bg-light);
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: left;
             position: relative;
             overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .option-card:hover {
-            border-color: var(--gold);
+            border-color: var(--accent);
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         
         .option-card.active {
-            border-color: var(--gold);
-            background: rgba(255, 215, 0, 0.1);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(139, 92, 246, 0.05));
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.15);
         }
         
         .option-title {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-primary);
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
         
         .option-description {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.4;
+            flex-grow: 1;
         }
         
         /* Слайдер депозита */
@@ -369,6 +455,8 @@
         .deposit-values {
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-top: 10px;
         }
         
@@ -376,30 +464,40 @@
             font-size: 15px;
             color: var(--text-secondary);
             cursor: pointer;
-            padding: 12px 16px;
-            border-radius: 10px;
-            transition: all 0.2s ease;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
             text-align: center;
             flex: 1;
-            max-width: 130px;
-            margin: 0 5px;
-            border: 1px solid transparent;
+            min-width: 120px;
+            background: var(--card-bg-light);
+            border: 2px solid var(--border);
+        }
+        
+        .deposit-value:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
         }
         
         .deposit-value.active {
-            background: rgba(255, 215, 0, 0.15);
-            color: var(--gold);
+            background: var(--accent-gradient);
+            color: var(--white);
             font-weight: 600;
-            border-color: var(--gold);
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
         }
         
         .deposit-hint {
             text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
-            color: var(--gold);
+            margin-top: 24px;
+            font-size: 15px;
+            color: var(--accent-secondary);
             font-weight: 500;
-            min-height: 24px;
+            min-height: 22px;
+            padding: 12px 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--accent);
         }
         
         /* Иконки игр */
@@ -414,25 +512,25 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            padding: 30px 24px;
-            border-radius: 16px;
+            padding: 32px 24px;
+            border-radius: var(--radius-lg);
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            background: var(--card-bg-light);
             justify-content: center;
             min-height: 140px;
         }
         
         .game-option:hover {
-            border-color: var(--gold);
+            border-color: var(--accent);
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         
         .game-option.active {
-            border-color: var(--gold);
-            background: rgba(255, 215, 0, 0.1);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(139, 92, 246, 0.05));
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.15);
         }
         
         .game-icon {
@@ -442,46 +540,63 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            font-size: 28px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
             color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+        
+        .game-option.active .game-icon {
+            background: var(--accent-gradient);
+            color: var(--white);
+            border-color: transparent;
         }
         
         .game-label {
             font-size: 18px;
             color: var(--text-primary);
-            font-weight: 500;
+            font-weight: 600;
             text-align: center;
         }
         
         .game-hint {
             text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
+            margin-top: 24px;
+            font-size: 15px;
             color: var(--text-secondary);
             font-style: italic;
-            min-height: 24px;
+            min-height: 22px;
+            padding: 12px 16px;
+            background: var(--card-bg-light);
+            border-radius: var(--radius-md);
         }
         
+        /* Кнопка "Найти" */
         .find-button {
             display: block;
             margin: 40px auto 0;
-            padding: 18px 50px;
-            background: var(--gold-gradient);
-            color: var(--dark-purple);
+            padding: 18px 48px;
+            background: var(--accent-gradient);
+            color: var(--white);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+            position: relative;
+            overflow: hidden;
         }
         
         .find-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
+        }
+        
+        .find-button:active {
+            transform: translateY(-2px);
         }
         
         .find-button:disabled {
@@ -491,9 +606,24 @@
             box-shadow: none;
         }
         
+        .find-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .find-button:hover::after {
+            left: 100%;
+        }
+        
         /* Результаты конструктора */
         .constructor-results {
-            margin: 70px 0 100px;
+            margin: 80px 0 100px;
             display: none;
         }
         
@@ -505,18 +635,22 @@
         .results-title {
             font-size: 42px;
             color: var(--text-primary);
-            margin-bottom: 50px;
+            margin-bottom: 60px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: -0.025em;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
+            background: linear-gradient(to right, #F8FAFC, #CBD5E1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         
         .carousel-container {
             position: relative;
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
@@ -535,24 +669,18 @@
         
         .card {
             min-width: 100%;
-            background: rgba(45, 27, 105, 0.7);
-            border-radius: 20px;
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
             padding: 32px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-light);
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
             position: relative;
             flex-shrink: 0;
             scroll-snap-align: start;
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-            border-color: var(--gold);
+            overflow: hidden;
         }
         
         .card::before {
@@ -560,10 +688,15 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gold-gradient);
-            border-radius: 20px 20px 0 0;
+            width: 100%;
+            height: 6px;
+            background: var(--accent-gradient);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
         }
         
         .card-header {
@@ -587,13 +720,13 @@
         }
         
         .badge-personal {
-            background: var(--gold-gradient);
-            color: var(--dark-purple);
+            background: var(--accent-gradient);
+            color: var(--white);
         }
         
         .card-date {
             font-size: 15px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -603,47 +736,56 @@
         .card-bonus {
             font-size: 22px;
             color: var(--text-primary);
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             font-weight: 700;
             line-height: 1.3;
         }
         
         .card-benefits {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
+            flex-grow: 1;
         }
         
         .card-benefit {
             font-size: 15px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 8px 0;
         }
         
         .card-benefit i {
-            color: var(--gold);
+            color: var(--success);
             font-size: 14px;
+            background: rgba(16, 185, 129, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .card-button {
             margin-top: auto;
             padding: 16px 24px;
-            background: var(--gold-gradient);
-            color: var(--dark-purple);
+            background: var(--accent-gradient);
+            color: var(--white);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
         }
         
         .card-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
         }
         
         /* Кнопки карусели */
@@ -651,12 +793,12 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background: var(--gold-gradient);
-            border: none;
+            width: 52px;
+            height: 52px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
             border-radius: 50%;
-            color: var(--dark-purple);
+            color: var(--text-primary);
             font-size: 18px;
             cursor: pointer;
             display: flex;
@@ -664,52 +806,58 @@
             justify-content: center;
             transition: all 0.3s ease;
             z-index: 10;
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         
         .carousel-btn:hover {
+            background: var(--accent-gradient);
+            color: var(--white);
             transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+            border-color: transparent;
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
         }
         
         .carousel-btn.prev {
-            left: -25px;
+            left: -26px;
         }
         
         .carousel-btn.next {
-            right: -25px;
+            right: -26px;
         }
         
-        /* Блок преимуществ */
+        /* Блок преимуществ - ОПТИМИЗИРОВАН ДЛЯ 4 БЛОКОВ В РЯД */
         .advantages-section {
             margin-bottom: 100px;
         }
         
         .advantages-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
             max-width: 1200px;
             margin: 0 auto;
         }
         
         .advantage-card {
-            background: rgba(45, 27, 105, 0.7);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: var(--card-shadow);
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 40px 24px;
+            box-shadow: var(--shadow-light);
             text-align: center;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
         }
         
         .advantage-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-            border-color: var(--gold);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
         }
         
         .advantage-card::before {
@@ -717,73 +865,87 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gold-gradient);
+            width: 100%;
+            height: 6px;
+            background: var(--accent-gradient);
         }
         
         .advantage-icon {
-            width: 70px;
-            height: 70px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            background: var(--gold-gradient);
-            border-radius: 20px;
-            color: var(--dark-purple);
+            background: var(--accent-gradient);
+            border-radius: var(--radius-lg);
+            color: var(--white);
         }
         
         .advantage-title {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--text-primary);
             font-weight: 700;
             margin-bottom: 16px;
+            line-height: 1.3;
         }
         
         .advantage-description {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-secondary);
             line-height: 1.5;
+            flex-grow: 1;
         }
         
         /* Футер */
         .footer {
-            background: rgba(31, 17, 71, 0.9);
-            padding: 50px 0 20px;
-            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            background: var(--card-bg);
+            padding: 80px 0 30px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--accent-gradient);
         }
         
         .footer-content {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 40px;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
         }
         
         .footer-logo {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             margin-bottom: 20px;
-            background: var(--gold-gradient);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent;
         }
         
         .footer-description {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .footer-heading {
             font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .footer-links {
@@ -796,24 +958,30 @@
             font-size: 15px;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .footer-link:hover {
-            color: var(--gold);
+            color: var(--accent-secondary);
+            transform: translateX(4px);
         }
         
         .footer-bottom {
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
             text-align: center;
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
         
         /* Анимации */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -839,82 +1007,59 @@
                 right: 10px;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 30px;
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
             }
             
             .advantages-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 1024px) {
-            .benefit-constructor {
-                max-width: 900px;
-                padding: 50px 40px;
+                gap: 24px;
             }
             
-            .hero-description {
-                max-width: 700px;
+            .footer-content {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 40px 30px;
             }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .section {
-                padding: 60px 0;
+                padding: 80px 0;
             }
             
             .hero {
-                padding: 100px 0 60px;
+                padding: 140px 0 60px;
             }
             
             .hero-title {
-                font-size: 36px;
-            }
-            
-            .hero-description {
-                font-size: 18px;
-                max-width: 600px;
-                margin-bottom: 40px;
+                font-size: 40px;
             }
             
             .analytics-badges {
-                gap: 15px;
-                margin-bottom: 50px;
+                gap: 20px;
+                margin-bottom: 60px;
             }
             
             .analytics-badge {
-                width: 160px;
-                height: 100px;
-                padding: 20px 16px;
-            }
-            
-            .analytics-number {
-                font-size: 28px;
+                min-width: 160px;
             }
             
             .benefit-constructor {
-                padding: 40px 30px;
+                padding: 48px 32px;
                 max-width: 100%;
-                margin-bottom: 50px;
             }
             
             .constructor-title {
-                font-size: 30px;
+                font-size: 32px;
             }
             
             .games-options {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .game-option {
-                min-height: 120px;
-                padding: 24px 20px;
-            }
-            
-            .section-title, .results-title {
-                font-size: 30px;
+                min-height: 130px;
             }
             
             .carousel-btn {
@@ -931,94 +1076,288 @@
                 right: 5px;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
+            .advantage-card {
+                padding: 32px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
             }
             
-            .advantages-grid {
-                grid-template-columns: 1fr;
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .section-title, .results-title {
+                font-size: 32px;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-description {
+                font-size: 17px;
+                margin-bottom: 40px;
+            }
+            
+            .analytics-badges {
+                gap: 16px;
+                margin-bottom: 50px;
+            }
+            
+            .analytics-badge {
+                min-width: calc(50% - 16px);
+                padding: 20px 16px;
+            }
+            
+            .analytics-number {
+                font-size: 32px;
+            }
+            
+            .benefit-constructor {
+                padding: 40px 24px;
+                margin-bottom: 50px;
+            }
+            
+            .constructor-title {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+            
+            .step-title {
+                font-size: 22px;
+            }
+            
+            .step-header {
+                margin-bottom: 24px;
             }
             
             .options-grid {
                 grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .deposit-values {
+                gap: 10px;
+            }
+            
+            .deposit-value {
+                min-width: calc(50% - 10px);
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+            
+            .games-options {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .game-option {
+                min-height: 120px;
+                padding: 24px 20px;
+            }
+            
+            .find-button {
+                padding: 16px 40px;
+                font-size: 17px;
+                margin-top: 32px;
+            }
+            
+            .results-title {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+            
+            .card {
+                padding: 28px 24px;
+            }
+            
+            .card-bonus {
+                font-size: 20px;
+            }
+            
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .advantage-card {
+                padding: 32px 24px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
             }
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
+            .hero {
+                padding: 120px 0 40px;
+            }
+            
             .hero-title {
                 font-size: 32px;
             }
             
             .hero-description {
                 font-size: 16px;
-                max-width: 350px;
             }
             
-            .analytics-badges {
-                gap: 10px;
-            }
-            
-            .analytics-badge {
-                width: calc(50% - 10px);
-                height: 90px;
+            .section {
+                padding: 60px 0;
             }
             
             .section-title, .results-title {
-                font-size: 26px;
+                font-size: 28px;
+            }
+            
+            .section-description {
+                font-size: 16px;
+            }
+            
+            .analytics-badge {
+                min-width: 100%;
+            }
+            
+            .benefit-constructor {
+                padding: 32px 20px;
+                border-radius: var(--radius-lg);
+            }
+            
+            .constructor-title {
+                font-size: 24px;
+            }
+            
+            .step-title {
+                font-size: 20px;
+            }
+            
+            .step-number {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+            }
+            
+            .option-card {
+                padding: 20px 16px;
+            }
+            
+            .option-title {
+                font-size: 16px;
+            }
+            
+            .option-description {
+                font-size: 12px;
             }
             
             .deposit-values {
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                gap: 12px;
             }
             
             .deposit-value {
-                flex: 0 0 calc(50% - 10px);
-                margin-bottom: 10px;
-                font-size: 14px;
-                padding: 10px 12px;
+                min-width: 100%;
+            }
+            
+            .game-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 24px;
+            }
+            
+            .game-label {
+                font-size: 17px;
+            }
+            
+            .carousel-btn {
+                display: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .section-title, .results-title {
+                font-size: 24px;
+            }
+            
+            .analytics-number {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Фоновые элементы -->
-    <div class="bg-elements">
-        <div class="bg-circle circle-1"></div>
-        <div class="bg-circle circle-2"></div>
-        <div class="bg-circle circle-3"></div>
-    </div>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><i class="fas fa-gem"></i> BonusFinder</div>
+                
+                <nav class="nav">
+                    <a href="#hero" class="nav-link">Главная</a>
+                    <a href="#constructor" class="nav-link">Подбор предложений</a>
+                    <a href="#advantages" class="nav-link">Преимущества</a>
+                </nav>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Мобильное меню -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-nav">
+                <a href="#hero" class="nav-link">Главная</a>
+                <a href="#constructor" class="nav-link">Подбор предложений</a>
+                <a href="#advantages" class="nav-link">Преимущества</a>
+            </div>
+        </div>
+    </header>
 
     <div class="container">
         <!-- Герой-блок -->
-        <section class="hero">
-            <h1 class="hero-title">Находим <span class="highlight">эксклюзивные бонусы</span>, которые подходят именно вам</h1>
-            
-            <div class="analytics-badges">
-                <div class="analytics-badge">
-                    <div class="analytics-number">247</div>
-                    <div class="analytics-label">Проанализировано предложений</div>
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Находим <span class="highlight">персональные предложения</span>, которые подходят именно вам</h1>
+                
+                <div class="analytics-badges">
+                    <div class="analytics-badge">
+                        <div class="analytics-number">247</div>
+                        <div class="analytics-label">Проанализировано предложений</div>
+                    </div>
+                    <div class="analytics-badge">
+                        <div class="analytics-number">6 ч</div>
+                        <div class="analytics-label">Обновление данных</div>
+                    </div>
+                    <div class="analytics-badge">
+                        <div class="analytics-number">98%</div>
+                        <div class="analytics-label">Рабочих предложений</div>
+                    </div>
+                    <div class="analytics-badge">
+                        <div class="analytics-number">24/7</div>
+                        <div class="analytics-label">Поддержка</div>
+                    </div>
                 </div>
-                <div class="analytics-badge">
-                    <div class="analytics-number">6 ч</div>
-                    <div class="analytics-label">Обновление данных</div>
-                </div>
-                <div class="analytics-badge">
-                    <div class="analytics-number">98%</div>
-                    <div class="analytics-label">Рабочих предложений</div>
-                </div>
-                <div class="analytics-badge">
-                    <div class="analytics-number">24/7</div>
-                    <div class="analytics-label">Поддержка</div>
-                </div>
+                
+                <p class="hero-description">Мы анализируем рынок, сверяем условия, фильтруем предложения — и даем только лучшие и проверенные варианты, которые подходят именно под ваши предпочтения.</p>
             </div>
-            
-            <p class="hero-description">Мы анализируем рынок, сверяем условия, фильтруем предложения — и даем только лучшие и проверенные варианты, которые подходят именно под ваши предпочтения.</p>
         </section>
         
         <!-- Конструктор персональной выгоды -->
-        <section class="section">
+        <section class="section" id="constructor">
             <div class="section-header">
                 <div class="section-subtitle">Соберите идеальное предложение</div>
                 <h2 class="section-title">Конструктор персональной выгоды</h2>
@@ -1118,7 +1457,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="casino-logo">Premium Club</div>
-                                <div class="badge badge-personal">Эксклюзив</div>
+                                <div class="badge badge-personal">Персональное предложение</div>
                             </div>
                             <div class="card-date"><i class="far fa-clock"></i> Обновлено сегодня</div>
                             <div class="card-bonus">+150% к первому пополнению + 75 бесплатных вращений</div>
@@ -1127,14 +1466,14 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Без ограничений по играм</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Быстрый вывод средств</div>
                             </div>
-                            <button class="card-button">Забрать бонус</button>
+                            <button class="card-button">Получить предложение</button>
                         </div>
                         
                         <!-- Карточка 2 -->
                         <div class="card">
                             <div class="card-header">
                                 <div class="casino-logo">Lucky Star</div>
-                                <div class="badge badge-personal">VIP</div>
+                                <div class="badge badge-personal">Персональное предложение</div>
                             </div>
                             <div class="card-date"><i class="far fa-clock"></i> Обновлено сегодня</div>
                             <div class="card-bonus">200 бесплатных вращений в популярных слотах</div>
@@ -1143,14 +1482,14 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Макс. выигрыш 50 000 руб</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Минимальная верификация</div>
                             </div>
-                            <button class="card-button">Забрать бонус</button>
+                            <button class="card-button">Получить предложение</button>
                         </div>
                         
                         <!-- Карточка 3 -->
                         <div class="card">
                             <div class="card-header">
                                 <div class="casino-logo">Golden Crown</div>
-                                <div class="badge badge-personal">Премиум</div>
+                                <div class="badge badge-personal">Персональное предложение</div>
                             </div>
                             <div class="card-date"><i class="far fa-clock"></i> Обновлено сегодня</div>
                             <div class="card-bonus">15% кешбэк еженедельно</div>
@@ -1159,7 +1498,7 @@
                                 <div class="card-benefit"><i class="fas fa-check"></i> Без условий отыгрыша</div>
                                 <div class="card-benefit"><i class="fas fa-check"></i> Мгновенное начисление</div>
                             </div>
-                            <button class="card-button">Забрать бонус</button>
+                            <button class="card-button">Получить предложение</button>
                         </div>
                     </div>
                     
@@ -1171,7 +1510,7 @@
         </section>
         
         <!-- Блок преимуществ -->
-        <section class="advantages-section">
+        <section class="advantages-section" id="advantages">
             <div class="section-header">
                 <div class="section-subtitle">Наши преимущества</div>
                 <h2 class="section-title">Почему выбирают нас</h2>
@@ -1210,22 +1549,6 @@
                     <h3 class="advantage-title">Персональный подход</h3>
                     <p class="advantage-description">Мы подбираем предложения именно под ваш стиль и предпочтения</p>
                 </div>
-                
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="advantage-title">Максимальная выгода</h3>
-                    <p class="advantage-description">Находим предложения с лучшими условиями и максимальными бонусами</p>
-                </div>
-                
-                <div class="advantage-card">
-                    <div class="advantage-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3 class="advantage-title">Поддержка 24/7</h3>
-                    <p class="advantage-description">Наша команда всегда готова помочь с выбором и ответить на вопросы</p>
-                </div>
             </div>
         </section>
     </div>
@@ -1235,16 +1558,25 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-about">
-                    <div class="footer-logo">GoldBonus</div>
-                    <p class="footer-description">Сервис поиска эксклюзивных предложений. Мы анализируем рынок и находим лучшие варианты для каждого пользователя.</p>
+                    <div class="footer-logo">BonusFinder</div>
+                    <p class="footer-description">Сервис поиска персональных предложений. Мы анализируем рынок и находим лучшие варианты для каждого пользователя.</p>
                 </div>
                 
                 <div class="footer-nav">
                     <h3 class="footer-heading">Навигация</h3>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">Главная</a>
-                        <a href="#" class="footer-link">Подбор предложений</a>
-                        <a href="#" class="footer-link">Преимущества</a>
+                        <a href="#hero" class="footer-link">Главная</a>
+                        <a href="#constructor" class="footer-link">Подбор предложений</a>
+                        <a href="#advantages" class="footer-link">Преимущества</a>
+                    </div>
+                </div>
+                
+                <div class="footer-info">
+                    <h3 class="footer-heading">Информация</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">FAQ</a>
+                        <a href="#" class="footer-link">Контакты</a>
+                        <a href="#" class="footer-link">Партнерская программа</a>
                     </div>
                 </div>
                 
@@ -1259,12 +1591,31 @@
             </div>
             
             <div class="footer-bottom">
-                <p>© 2024 GoldBonus. Все права защищены.</p>
+                <p>© 2024 BonusFinder. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Логика мобильного меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.mobile-nav .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
         // Логика конструктора
         const steps = {
             1: { completed: false, selected: null },
@@ -1379,43 +1730,52 @@
         const cardsContainer = document.getElementById('cardsContainer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const cardWidth = cardsContainer.offsetWidth;
-        const totalCards = cardsContainer.children.length;
-        let currentPosition = 0;
-
-        function scrollToPosition(position) {
-            cardsContainer.scrollTo({
-                left: position,
-                behavior: 'smooth'
-            });
-        }
+        let scrollPosition = 0;
+        const cardWidth = cardsContainer.children[0].offsetWidth + 24; // ширина карточки + gap
 
         prevBtn.addEventListener('click', () => {
-            if (currentPosition === 0) {
-                currentPosition = (totalCards - 1) * cardWidth;
+            if (scrollPosition === 0) {
+                scrollPosition = (cardsContainer.children.length - 1) * cardWidth;
             } else {
-                currentPosition -= cardWidth;
+                scrollPosition -= cardWidth;
             }
-            scrollToPosition(currentPosition);
+            cardsContainer.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
         });
 
         nextBtn.addEventListener('click', () => {
-            const maxPosition = (totalCards - 1) * cardWidth;
+            const maxScroll = (cardsContainer.children.length - 1) * cardWidth;
             
-            if (currentPosition >= maxPosition) {
-                currentPosition = 0;
+            if (scrollPosition >= maxScroll) {
+                scrollPosition = 0;
             } else {
-                currentPosition += cardWidth;
+                scrollPosition += cardWidth;
             }
-            scrollToPosition(currentPosition);
+            cardsContainer.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
         });
 
-        // Обработка кнопок "Забрать бонус"
+        // Обработка кнопок "Получить предложение"
         document.querySelectorAll('.card-button').forEach(button => {
             button.addEventListener('click', function() {
+                // Анимация нажатия
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                
+                // В реальном приложении здесь будет переход
                 alert('Перенаправляем на страницу с деталями предложения...');
-                // window.location.href = 'ссылка_на_предложение';
             });
+        });
+        
+        // Обработка прокрутки для карусели
+        cardsContainer.addEventListener('scroll', () => {
+            scrollPosition = cardsContainer.scrollLeft;
         });
     </script>
 </body>
